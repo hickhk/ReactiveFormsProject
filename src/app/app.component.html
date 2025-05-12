@@ -1,0 +1,27 @@
+<div class=" p-4 max-w-screen-xl mx-auto">
+  <div>
+    <mat-card>
+      <mat-card-content>
+        <app-users-list
+        [usersList] = "usersList"
+        (userSelectedEmiter)="onUserSelected($event)"
+        [isInEditMode]="isInEditMode"
+        ></app-users-list>
+        <app-buttons-container *ngIf="currentUser"
+        [isInEditMode]="isInEditMode"
+          (onCandelButton)="onCandelButton()"
+          (onEditButton)="onEditButton()"
+          (onSaveButton)="onSaveButton()"
+          [isValidForm]="isValidForm"
+        ></app-buttons-container>
+        <app-user-informations-container
+         *ngIf="currentUser"
+         [userSelected]="currentUser"
+         [isInEditMode]="isInEditMode"
+         (isValidForm)="onEnableSaveButton($event)"
+         ></app-user-informations-container>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

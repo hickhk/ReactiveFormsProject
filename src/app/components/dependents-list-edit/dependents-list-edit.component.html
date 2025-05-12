@@ -1,0 +1,38 @@
+<form class="p-4" [formGroup]="userForm">
+  <p class="text-xl font-semibold">Dependentes:</p>
+  <div>
+    <button (click)="onAddDependent()"
+    class="rounded-md px-3 py-2 font-medium leading-5 text-white bg-green-600 hover:bg-green-500">+ Novo Dependente</button>
+  </div>
+  <ng-container formArrayName="dependentesList" *ngIf="dependentesList.controls.length > 0; else withoutDependents">
+    <ng-container *ngFor="let dependent of dependentesList.controls; let i = index" [formGroupName]="i">
+      <div class="my-4 grid grid-cols-2 sm:grid-cols-4">
+        <mat-form-field class="w-full">
+          <mat-label>Nome:</mat-label>
+          <input matInput placeholder="Nome" formControlName="name" >
+          <mat-error>O Nome é obrigatorio!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Idade:</mat-label>
+          <input matInput placeholder="Idade" formControlName="age" >
+          <mat-error>A Idade é obrigatoria!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-full">
+          <mat-label>Documento:</mat-label>
+          <input matInput placeholder="XXX.XXX.XXX-XX" mask="000.000.000-00" formControlName="document" >
+          <mat-error *ngIf="dependent.get('document')?.hasError('required')">O documento é obrigatorio!</mat-error>
+          <mat-error *ngIf="dependent.get('document')?.hasError('mask')">O documento é inválido!</mat-error>
+        </mat-form-field>
+        <div class="flex justify-center items-baseline box-border p-2">
+          <button (click)="onRemoveButton(i)"
+          class="rounded-md px-3 py-2 font-medium leading-5 text-white bg-red-600 hover:bg-red-500">Remover</button>
+        </div>
+        <hr class="block sm:hidden">
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-template #withoutDependents>
+    O usuário não possui dependentes!
+  </ng-template>
+  
+</form>

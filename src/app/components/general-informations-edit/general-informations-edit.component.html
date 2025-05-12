@@ -1,0 +1,81 @@
+<form
+[formGroup]="userForm"
+
+ class="p-4 grid gap-4">
+ <ng-container formGroupName="generalInformations">
+    <div class="grid lg:grid-cols-3 gap-4">
+      <mat-form-field class="w-full">
+        <mat-label>Nome:</mat-label>
+        <input matInput placeholder="Nome" formControlName="name" aria-label="Nome">
+        <mat-error>O Nome é obrigatorio!</mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-full">
+        <mat-label>Email:</mat-label>
+        <input matInput placeholder="Email" formControlName="email" aria-label="Email">
+        <mat-error *ngIf="emailControl.hasError('required')">O Email é obrigatorio!</mat-error>
+        <mat-error *ngIf="emailControl.hasError('pattern')">O Email é inválido.</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-4">
+
+        <mat-form-field class="example-full-width">
+          <mat-label>País:</mat-label>
+          <input type="text"
+                 placeholder="Brazil"
+                 aria-label="País"
+                 matInput
+                 [matAutocomplete]="autoCountry"
+                 formControlName="country"
+                 >
+          <mat-autocomplete autoActiveFirstOption #autoCountry="matAutocomplete" (optionSelected)="onCountrySelected($event)">
+              <mat-option *ngFor="let country of countriesListFilter" [value]="country.name">{{country.name}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <mat-label>Estado:</mat-label>
+          <input type="text"
+                 placeholder="São Paulo"
+                 aria-label="Estado"
+                 matInput
+                 [matAutocomplete]="autoState"
+                 formControlName="state"
+                 >
+          <mat-autocomplete autoActiveFirstOption #autoState="matAutocomplete">
+              <mat-option *ngFor="let state of statesListFilter" [value]="state.name">{{state.name}}</mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+    </div>
+    <div class="grid lg:grid-cols-3 gap-4">
+      <div class="w-full">
+        <div class="text-lg">Estado Civil:</div>
+        <mat-radio-group formControlName="maritalStatus" class="w-full flex flex-col sm:flex-row sm:justify-between">
+         <mat-radio-button *ngFor="let maritalStatus of maritalStatusArray" [value]="maritalStatus.value">
+          {{maritalStatus.description}}
+         </mat-radio-button>
+       </mat-radio-group>
+      </div>
+      <mat-form-field class="w-full">
+        <mat-label>Renda Mensal:</mat-label>
+        <span matTextPrefix *ngIf="monthlyIncome.value">R$ </span>
+        <input #monthlyIncome matInput 
+        placeholder="Renda Mensal" 
+        formControlName="monthlyIncome" 
+        mask="separator.2" 
+        thousandSeparator="." 
+        decimalSeparator="," 
+        aria-label="Renda Mensal">
+        <mat-error>A Renda Mensal é obrigatoria!</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Data de Nascimento:</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthDate" aria-label="Data de Nascimento" readonly>
+        <mat-hint>DD/MM/AAAA</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>A Data de Nascimento é obrigatoria!</mat-error>
+      </mat-form-field>
+    </div>
+  </ng-container>
+</form>

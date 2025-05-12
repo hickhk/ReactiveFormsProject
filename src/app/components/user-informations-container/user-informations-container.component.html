@@ -1,0 +1,45 @@
+<mat-tab-group [(selectedIndex)]="currentTabIndex"  class="mat-elevation-z4">
+  <mat-tab label="geral">
+    <ng-template mat-tab-label>
+      Geral
+      <mat-icon 
+      class="red-circle-icon"
+      *ngIf="isInEditMode && generalInformations.invalid">error</mat-icon>
+    </ng-template>
+    
+  <app-general-informations [user]="userSelected" *ngIf="!isInEditMode"></app-general-informations>
+  <app-general-informations-edit 
+  [userForm]="userForm" 
+  [countriesList]="countries" 
+  [statesList]="statesList"
+  (countrySelectedEmit)="onCountrySelected($event)"
+  *ngIf="isInEditMode"
+  ></app-general-informations-edit>
+  </mat-tab>
+  <mat-tab label="Contato">
+    <ng-template mat-tab-label>
+      Contato
+      <mat-icon 
+      class="red-circle-icon"
+      *ngIf="isInEditMode && (phoneList.invalid || addressList.invalid)">error</mat-icon>
+    </ng-template>
+    <app-contact-informations [user]="userSelected" *ngIf="!isInEditMode"></app-contact-informations>
+    <app-contact-informations-edit *ngIf="isInEditMode" [userForm]="userForm"></app-contact-informations-edit>
+  </mat-tab>
+  <mat-tab label="Dependentes">
+    <ng-template mat-tab-label>
+      Geral
+      <mat-icon 
+      class="red-circle-icon"
+      *ngIf="isInEditMode && dependentsList.invalid">error</mat-icon>
+    </ng-template>
+    <app-dependents-list [dependentsList]="userSelected?.dependentsList" *ngIf="!isInEditMode"></app-dependents-list>
+    <app-dependents-list-edit 
+    *ngIf="isInEditMode"
+     [userForm]="userForm"
+     (onRemovelDependent)="removeDependent($event)"
+     (onAddDependent)="addDependent()"
+     ></app-dependents-list-edit>
+  </mat-tab>
+</mat-tab-group>
+
